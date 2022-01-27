@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISuperheroRepository, SuperheroRepository>();
 builder.Services.AddScoped<ISuperpowerRepository, SuperpowerRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddGraphQLServer().AddQueryType<Query>().AddProjections().AddFiltering().AddSorting();
 
 // Add Application Db Context options
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -36,5 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGraphQL("/graphql");
 
 app.Run();
