@@ -21,9 +21,14 @@ builder.Services.AddGraphQLServer().AddQueryType<Query>().AddProjections().AddFi
 
 // Add Application Db Context options
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+options.UseSqlite("Data Source=SuperHero.db"));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+    context.Database.EnsureCreated();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
